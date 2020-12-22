@@ -19,7 +19,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('files/', views.files, name='files'),
+    path('myfiles/', views.myfiles, name='files'),
+    path('download/', views.download, name='download'),
     path('admin/', admin.site.urls, name='admin'),
     path('account/', include('django.contrib.auth.urls'), name='account')
 ]
