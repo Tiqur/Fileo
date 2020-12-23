@@ -18,12 +18,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from accounts.views import login_view
+from accounts.views import login_view, register_view
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('myfiles/', views.myfiles, name='files'),
     path('download/', views.download, name='download'),
     path('admin/', admin.site.urls, name='admin'),
-    path('account/login/', login_view, name='login_view')
+    path('account/login/', login_view, name='login_view'),
+    path('account/register/', register_view, name='register_view')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

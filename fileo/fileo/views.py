@@ -9,7 +9,7 @@ def index(request):
 @login_required(login_url='/account/login')
 def myfiles(request):
     context = {'files': list(range(1, 20))}
-    if request.method == 'POST' and request.FILES['upload_file']:
+    if request.method == 'POST' and request.FILES.get('upload_file'):
         file = request.FILES.get('upload_file')
         fs = FileSystemStorage()
         filename = fs.save(file.name, file)
