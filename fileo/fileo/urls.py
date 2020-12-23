@@ -18,11 +18,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from accounts.views import login_view
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('myfiles/', views.myfiles, name='files'),
     path('download/', views.download, name='download'),
     path('admin/', admin.site.urls, name='admin'),
-    path('account/', include('django.contrib.auth.urls'), name='account')
+    path('account/login/', login_view, name='login_view')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

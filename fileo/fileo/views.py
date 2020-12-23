@@ -6,9 +6,8 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     return render(request, 'fileo/index.html')
 
-@login_required(login_url='login')
+@login_required(login_url='/account/login')
 def myfiles(request):
-    print("Request: " + request.method)
     context = {'files': list(range(1, 20))}
     if request.method == 'POST' and request.FILES['upload_file']:
         file = request.FILES.get('upload_file')
