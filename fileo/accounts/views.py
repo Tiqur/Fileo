@@ -3,21 +3,29 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserLoginForm, UserRegisterForm
 
 def login_view(request):
-    next = request.GET.get('next')
-    form = UserLoginForm(request.POST or None)
+    context = {}
 
-    if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-        
-        if next:
-            return redirect(next)
-        
-        return redirect('/')
+    user = request.user
+    if user.is_authenticated:
+        return redirect('index')
 
-    return render(request, 'registration/login.html', {'form': form})
+    if request.POST:
+        form = UserLoginForm(request.POST)
+
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email, password=password)
+
+            if user:
+                login(request, user)
+                return redirect('index')
+    else:
+        form = UserLoginForm()
+
+    context['login_form'] = form
+    return render(request, 'registration/login.html', context)
+
 
 def register_view(request):
     context = {}
