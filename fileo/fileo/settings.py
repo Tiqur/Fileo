@@ -71,6 +71,7 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'accounts.FileoUser'
 WSGI_APPLICATION = 'fileo.wsgi.application'
 
 
