@@ -1,15 +1,16 @@
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
 from .models import FileoUser
 
 User = FileoUser()
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField()
+    username = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self, *args, **kwargs):
-        username = self.cleaned_data.get('username')
+        username = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
 
         if username and password:
@@ -27,38 +28,9 @@ class UserLoginForm(forms.Form):
             return super(UserLoginForm, self).clean(*args, **kwargs)
 
         
-class UserRegisterForm(forms.ModelForm):
-    email = forms.EmailField(label='Email Address')
-    email2 = forms.EmailField(label='Confirm Email')
-    password = forms.CharField(widget=forms.PasswordInput, label="Password")
-    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
-    username = forms.CharField()
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField(max_length=60, help_text='Add a valid email address')
 
     class Meta:
-        model = User
-        fields = [
-            'username',
-            'email',
-            'email2',
-            'password',
-            'password2'
-        ]
-
-    def clean(self, *args, **kwargs):
-        email = self.cleaned_data.get('email')
-        email2 = self.cleaned_data.get('email2')
-        password = self.cleaned_data.get('password')
-        password2 = self.cleaned_data.get('password2')
-
-        if email != email2:
-            raise forms.ValidationError("Emails must match")
-
-        if password != password2:
-            raise forms.ValidationError("Passwords must match")
-
-        email_qs = User.objects.filter(email=email)
-        
-        if email_qs.exists():
-            raise forms.ValidationError("This email already exists")
-
-        return super(UserRegisterForm, self).clean(*args, **kwargs)
+        model = FileoUser
+        fields = ('email', 'username', 'password1', 'password2')
