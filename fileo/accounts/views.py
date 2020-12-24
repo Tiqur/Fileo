@@ -38,3 +38,6 @@ def register_view(request):
         context['registration_form'] = form
     return render(request, 'registration/register.html', context)
 
+def logout_view(request):
+    logout(request)
+    return redirect('index')
