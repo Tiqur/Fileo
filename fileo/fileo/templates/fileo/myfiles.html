@@ -1,15 +1,17 @@
-<p>Logged in as: {{ user.username }}</p>
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  <input type="file" name="upload_file">
-  <button type="submit">Upload</button>
-</form>
+{% extends 'base.html' %}
+{% block content %}
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="upload_file">
+    <button type="submit">Upload</button>
+  </form>
 
-{% if uploaded_file_url %}
-  <p>File uploaded at: <a href="{{ uploaded_file_url }}"></a>{{ uploaded_file_url }}</p>
-{% endif %}
+  {% if uploaded_file_url %}
+    <p>File uploaded at: <a href="{{ uploaded_file_url }}"></a>{{ uploaded_file_url }}</p>
+  {% endif %}
 
-{% for i in files %}
-  <a href="/download/#{{i}}">{{ i }}</a><br>
-{% endfor %}
+  {% for i in files %}
+    <a href="/download/#{{i}}">{{ i }}</a><br>
+  {% endfor %}
+{% endblock content %}
 
